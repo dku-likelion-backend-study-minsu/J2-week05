@@ -1,0 +1,23 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: j2-week05-mysql-20261007
+    labels:
+      com.ll.demo03.project: j2-week05
+    env_file:
+      - .local/mysql.env
+    ports:
+      - "127.0.0.1:13308:3306"
+    volumes:
+      - week05-mysql-data:/var/lib/mysql
+      - ./scripts/mysql-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+volumes:
+  week05-mysql-data:
+    name: j2-week05-mysql-data-20261007
+    labels:
+      com.ll.demo03.project: j2-week05
